@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" ng-app="tipApp">
+<head>
+	<meta charset="utf-8">
+	<title>Tip Calculator</title>
+
+
+<!-- Link to CSS sheet -->
+<link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+<!-- import bootstrap css -->
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- JavaScript Code -->
+<script type="text/javascript">
+
+	// Find out how much the user wants to tip
+	// Returning the checked value of the radio buttons
+	function getRadioValue(optionsRadios) 
+	{
+    	var elements = document.getElementsByName(optionsRadios);
+    	for (var i = 0, l = elements.length; i < l; i++)
+   		{
+        	if (elements[i].checked)
+        	{
+            	return elements[i].value;
+        	}
+    	}
+	}
+	
+	// Calling getRadioValue to return the tip
+	function getTip() {
+		var tipString = getRadioValue("optionsRadios");
+		var tip = strToInt(tipString);
+		return tip;
+	}
+
+	// Getting the int value of the radio button
+	function strToInt(radioButton) {
+		if (radioButton === "bad") {
+			return .13;
+		}
+		else if (radioButton === "good") {
+			return .16;
+		}
+		else 
+			return .20;
+	}
+
+	// getting the value from the text box.
+	function getTab() {
+		var tab = document.getElementById("tabtext").value;
+		return tab;
+	}
+
+	// calculating the total and storing values for tipAmount and totalAmount
+	function calculateTotal() {
+
+		var tip = getTip();
+		var tab = getTab();
+		var total = parseFloat(tip*tab) + parseFloat(tab);
+		document.getElementById("tipAmount").innerHTML = (tab*tip).toFixed(2);
+		document.getElementById("totalAmount").innerHTML = total.toFixed(2);
+		return total;
+	}
+
+	// Remove visibility on the mogal.
+	// Will display Tip and Total
+	function overlayOn() {
+		var vis = document.getElementById("overlay");
+		vis.style.visibility = (vis.style.visibility == "visible") ? "hidden" : "visible";
+	}
+
+	function overlayOff() {
+		var vis = document.getElementById("overlay");
+		vis.style.visibility = (vis.style.visibility == "hidden") ? "visible" : "hidden";
+	}
+
+	</script>
+
+
+</head>
+<body>
+<form>
+	<h1>Welcome to the Tip Calculator!</h1>
+
+	<p>Was your service:</p>
+
+	<!--Radio Buttons for Service Check-->
+	<div class="radio">
+  		<label>
+    		<input type="radio" name="optionsRadios" id="bad" value="bad">
+    		Bad? --> 13% Tip
+  		</label>
+	</div>
+	<div class="radio">
+  		<label>
+    		<input type="radio" name="optionsRadios" id="good" value="good">
+    		Good? -->   16% Tip
+  		</label>
+	</div>
+	<div class="radio">
+  		<label>
+    		<input type="radio" name="optionsRadios" id="great" value="great">
+    		Great? -->  20% Tip 
+  		</label>
+	</div>
+	<br>
+	<p>What was you tab total?</p>
+	<input type="text" name="tabtext" id="tabtext"/>
+	
+
+
+	<!--button to open the modal. Total amount to be paid will pop up in window-->
+	<br>
+	<br>
+	<button type="button" onclick="overlayOn(); calculateTotal();" class="btn btn-primary">Tabulate <span>(More like Tipulate)</span></button>
+
+	<!-- Making modal -->
+	<div id="overlay">
+    	<div>
+         	<p>Tip is: $<span id="tipAmount"></span> Total is: $<span id="totalAmount"></span></p>
+         	<button type="reset" onClick="overlayOff()">Reset</button>
+    	</div>
+	</div>
+
+</form>
+</body>
+</html>
